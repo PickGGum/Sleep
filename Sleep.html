@@ -420,6 +420,8 @@ function createSlotControls() {
 
       alert(`슬롯 ${i}가 초기 설정으로 초기화되었습니다.`);
     };
+    row.append(label, saveBtn, loadBtn, clearBtn);
+    slotsDiv.appendChild(row);
   }
 }
 
