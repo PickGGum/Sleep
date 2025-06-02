@@ -1,20 +1,37 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="UTF-8" />
   <title>Sleep</title>
   <style>
-    * { box-sizing: border-box; }
+    :root {
+      --bg-color: #f0f2f5;
+      --text-color: #000;
+      --btn-bg: rgb(0, 0, 0);
+      --btn-hover: #45a049;
+      --modal-bg: rgba(0, 0, 0, 0.5);
+    }
+
+    body.dark {
+      --bg-color: #202020;
+      --text-color: #eee;
+      --btn-bg: #81C784;
+      --btn-hover: #66BB6A;
+    }
+
     body {
       margin: 0;
-      font-family: Arial, sans-serif;
-      background-color: #f0f2f5;
+      background: var(--bg-color);
+      color: var(--text-color);
+      font-family: sans-serif;
     }
+
     .container {
       display: flex;
       flex-direction: row;
       height: 100vh;
     }
+
     #wheel-section {
       flex: 1;
       display: flex;
@@ -22,25 +39,27 @@
       align-items: center;
       position: relative;
     }
+
     #wheel {
-      width: 400px;
-      height: 400px;
+      width: 600px;
+      height: 600px;
       border-radius: 50%;
       border: 10px solid #333;
       overflow: hidden;
       transform: rotate(0deg);
       transition: transform 5s ease-out;
     }
+
     #arrow {
       position: absolute;
       top: 50%;
       left: 50%;
-      transform: translate(-50%, -200px); /* -200px은 룰렛 반지름과 화살표 높이를 고려한 값 */
+      transform: translate(-50%, -300px);
       width: 0;
       height: 0;
-      border-left: 7px solid transparent;
-      border-right: 7px solid transparent;
-      border-top: 30px solid red; /* 방향을 아래로 향하도록 수정 */
+      border-left: 10px solid transparent;
+      border-right: 10px solid transparent;
+      border-top: 30px solid #f61212;
       z-index: 10;
     }
 
@@ -48,80 +67,86 @@
       width: 100%;
       height: 100%;
     }
+
     #control-panel {
       flex: 1;
       padding: 20px;
       overflow-y: auto;
     }
-    #spinButton {
-      margin-top: 20px;
-      padding: 10px 20px;
-      font-size: 18px;
-      background-color: #4CAF50;
-      color: white;
+
+    button {
+      padding: 8px 12px;
+      margin: 5px;
+      font-size: 14px;
       border: none;
-      border-radius: 10px;
+      border-radius: 6px;
+      background-color: var(--btn-bg);
+      color: #ffffff;
       cursor: pointer;
+      transition: background-color 0.2s;
     }
+
+    button:hover {
+      background-color: var(--btn-hover);
+    }
+
     #result {
-      margin-top: 20px;
       font-size: 20px;
-      font-weight: bold;
+      margin: 10px 0;
     }
+
     .option-setting {
       display: flex;
       gap: 5px;
-      margin-bottom: 10px;
+      margin-bottom: 7px;
       align-items: center;
     }
-    .option-setting input {
-      padding: 5px;
-      font-size: 14px;
-    }
-    .option-setting button {
-      padding: 5px 10px;
-    }
-    #control-panel button {
-      margin: 5px 5px 5px 0;
-    }
-    
-    #slots div {
-      display: flex;
-      gap: 5px;
-      align-items: center;
-    }
-    
-    #slotControls h3 {
-      margin-top: 30px;
-      font-size: 18px;
-      font-weight: bold;
-      border-top: 1px solid #ccc;
-      padding-top: 10px;
-    }
-    
-    #slotControls button {
-      padding: 4px 8px;
-      font-size: 12px;
-    }
-    
+
     .option-setting input[type="text"] {
       flex: 1;
     }
+
     .option-setting input[type="number"] {
       width: 60px;
     }
+
     .option-setting input[type="color"] {
       width: 40px;
-      padding: 0;
       border: none;
-      background: none;
     }
-    .option-setting button {
-      width: 50px;
+
+    .modal {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      background: var(--modal-bg);
+      display: none;
+      align-items: center;
+      justify-content: center;
     }
-    #globalControls {
+
+    .modal-content {
+      background: var(--bg-color);
+      color: var(--text-color);
+      padding: 20px;
+      border-radius: 10px;
+      max-height: 90vh;
+      overflow-y: auto;
+      width: 600px;
+    }
+
+    .modal-content h2 {
+      margin-top: 0;
+    }
+
+    #slots div {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 6px;
+    }
+
+    #darkToggle {
       margin-top: 10px;
-      margin-bottom: 20px;
     }
   </style>
 </head>
@@ -129,36 +154,36 @@
 <div class="container">
   <div id="wheel-section">
     <div id="arrow"></div>
-    <div id="wheel">
-      <canvas id="wheelCanvas" width="400" height="400"></canvas>
-    </div>
+    <div id="wheel"><canvas id="wheelCanvas" width="600" height="600"></canvas></div>
   </div>
   <div id="control-panel">
     <button id="spinButton">돌리기</button>
+    <button id="openSettings">항목 보기</button>
+    <button id="saveSettings">현재 룰렛 저장</button>
+    <button id="loadSettings">최근 저장 불러오기</button>
+    <button id="resetToDefault">룰렛 초기화</button>
+    <label id="darkToggle"><input type="checkbox" id="darkModeToggle"> 다크모드</label>
     <div id="result"></div>
-    <div id="settings"></div>
-    <div id="globalControls">
-      <button id="addOption">항목 추가</button>
-      <button id="saveSettings">전체 저장</button>
-      <button id="loadSettings">전체 불러오기</button>
-      <button id="resetToDefault">룰렛 초기화</button>
-    </div>
+    <h3>슬롯 저장/불러오기</h3>
+    <div id="slots"></div>
+  </div>
+</div>
 
-      <div id="slotControls">
-        <h3>슬롯 저장/불러오기</h3>
-        <div id="slots"></div>
-      </div>
-    
+<!-- 모달 -->
+<div class="modal" id="settingsModal">
+  <div class="modal-content">
+    <h2>항목 설정</h2>
+    <div id="settings"></div>
+    <button onclick="document.getElementById('settingsModal').style.display='none'">닫기</button>
+    <button id="addOption">항목 추가</button>
   </div>
 </div>
 
 <script>
-  const wheelCanvas = document.getElementById('wheelCanvas');
-  const ctx = wheelCanvas.getContext('2d');
-  const spinButton = document.getElementById('spinButton');
-  const resultDiv = document.getElementById('result');
-  const settingsDiv = document.getElementById('settings');
-  const addOptionBtn = document.getElementById('addOption');
+  const canvas = document.getElementById('wheelCanvas');
+  const ctx = canvas.getContext('2d');
+  let rotation = 0;
+  let spinning = false;
 
   let options = Array.from({ length: 30 }, (_, i) => ({
     name: `${i + 1}`,
@@ -166,311 +191,205 @@
     color: `hsl(${(i * 12) % 360}, 80%, 60%)`
   }));
 
-  const savedOptions = localStorage.getItem('rouletteOptions');
-  if (savedOptions) {
-    try {
-      options = JSON.parse(savedOptions);
-    } catch {
-      options = Array.from({ length: 30 }, (_, i) => ({
-        name: `${i + 1}`,
-        probability: 999,
-        color: `hsl(${(i * 12) % 360}, 80%, 60%)`
-      }));
-    }
-  } else {
-    options = Array.from({ length: 30 }, (_, i) => ({
-      name: `${i + 1}`,
-      probability: 999,
-      color: `hsl(${(i * 12) % 360}, 80%, 60%)`
-    }));
+  const resultDiv = document.getElementById('result');
+  const wheelEl = document.getElementById('wheel');
+
+  function drawWheel(highlightIndex = -1, blink = false) {
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    const total = options.reduce((sum, o) => sum + o.probability, 0);
+    let startAngle = -Math.PI / 2;
+
+    options.forEach((opt, i) => {
+      const sliceAngle = (opt.probability / total) * 2 * Math.PI;
+      ctx.beginPath();
+      ctx.moveTo(300, 300);
+      ctx.arc(300, 300, 300, startAngle, startAngle + sliceAngle);
+      ctx.closePath();
+      ctx.fillStyle = opt.color;
+      ctx.fill();
+
+      if (i === highlightIndex && blink) {
+        ctx.strokeStyle = '#FFD700';
+        ctx.lineWidth = 5;
+        ctx.stroke();
+      }
+
+      ctx.save();
+      ctx.translate(300, 300);
+      ctx.rotate(startAngle + sliceAngle / 2);
+      ctx.fillStyle = "#fff";
+      ctx.font = '16px Arial';
+      ctx.textAlign = 'right';
+      ctx.fillText(opt.name, 280, 10);
+      ctx.restore();
+
+      startAngle += sliceAngle;
+    });
   }
 
-
-  let rotation = 0;
-  let spinning = false;
-
-  // 룰렛을 그리는 함수
-  function drawWheel(highlightIndex = -1, blink = false) {
-  ctx.clearRect(0, 0, wheelCanvas.width, wheelCanvas.height);
-
-  const total = options.reduce((sum, o) => sum + o.probability, 0);
-  let startAngle = -Math.PI / 2;
-
-  options.forEach((option, index) => {
-    const sliceAngle = (option.probability / total) * 2 * Math.PI;
-
-    ctx.beginPath();
-    ctx.moveTo(200, 200);
-    ctx.arc(200, 200, 200, startAngle, startAngle + sliceAngle);
-    ctx.closePath();
-    ctx.fillStyle = option.color || '#888'; // fallback color
-    ctx.fill();
-
-    if (index === highlightIndex && blink) {
-      ctx.lineWidth = 5;
-      ctx.strokeStyle = '#FFD700';
-      ctx.stroke();
-    }
-
-    ctx.save();
-    ctx.translate(200, 200);
-    ctx.rotate(startAngle + sliceAngle / 2);
-    ctx.textAlign = 'right';
-    ctx.fillStyle = '#fff';
-    ctx.font = '14px Arial';
-    ctx.fillText(option.name, 180, 10);
-    ctx.restore();
-
-    startAngle += sliceAngle;
-  });
-}
-
-
-  // 확률에 따른 항목을 랜덤으로 선택하는 함수
   function pickByProbability() {
     const total = options.reduce((sum, opt) => sum + opt.probability, 0);
-    const r = Math.random() * total;
-    let acc = 0;
-    for (const option of options) {
-      acc += option.probability;
-      if (r <= acc) return option;
+    let r = Math.random() * total, acc = 0;
+    for (const opt of options) {
+      acc += opt.probability;
+      if (r <= acc) return opt;
     }
     return options[options.length - 1];
   }
 
-  // 룰렛을 돌리는 함수
   function spinWheel() {
-  if (spinning) return;
-  spinning = true;
+    if (spinning) return;
+    spinning = true;
+    const total = options.reduce((sum, o) => sum + o.probability, 0);
+    const target = pickByProbability();
 
-  const total = options.reduce((sum, o) => sum + o.probability, 0);
-  const target = pickByProbability();
-
-  // 그려진 룰렛에서 각 항목의 시작, 끝 각도를 계산
-  let startAngle = -90; // 기준점을 12시 방향으로 (-90도)
-  let targetIndex = 0;
-  for (let i = 0; i < options.length; i++) {
-    const angle = (options[i].probability / total) * 360;
-    if (options[i] === target) {
-      break;
+    let angle = -90;
+    for (let i = 0; i < options.length; i++) {
+      const a = (options[i].probability / total) * 360;
+      if (options[i] === target) break;
+      angle += a;
     }
-    startAngle += angle;
-    targetIndex++;
-  }
+    const slice = (target.probability / total) * 360;
+    const offset = (Math.random() - 0.5) * slice * 0.5;
+    const targetAngle = angle + slice / 2 + offset;
+    const fullSpins = 5 * 360;
+    const newRotation = fullSpins + (360 - targetAngle);
+    rotation += newRotation;
+    wheelEl.style.transform = `rotate(${rotation}deg)`;
 
-  const sliceAngle = (target.probability / total) * 360;
-  // slice 중앙에서 약간 무작위 편차 주기 (-sliceAngle/4 ~ +sliceAngle/4)
-  const offset = (Math.random() - 0.5) * sliceAngle * 0.5;
-  const targetAngle = startAngle + sliceAngle / 2 + offset;
-
-
-  // 현재 rotation에서 몇 바퀴 돌고 targetAngle에 멈추도록 계산
-  const fullSpins = 5 * 360;
-  const newRotation = fullSpins + (360 - targetAngle);
-  rotation += newRotation;
-
-  document.getElementById('wheel').style.transform = `rotate(${rotation}deg)`;
-
-  setTimeout(() => {
-  const finalRotation = rotation % 360;
-  const finalAngle = (360 - (finalRotation % 360)) % 360;
-
-  const total = options.reduce((sum, o) => sum + o.probability, 0);
-  let angleAccumulator = 0;
-  let resultIndex = -1;
-  let result = null;
-  for (let i = 0; i < options.length; i++) {
-    const angleSize = (options[i].probability / total) * 360;
-    const start = angleAccumulator;
-    const end = angleAccumulator + angleSize;
-    if (finalAngle >= start && finalAngle < end) {
-      result = options[i];
-      resultIndex = i;
-      break;
-    }
-    angleAccumulator += angleSize;
-  }
-
-  resultDiv.innerText = `결과: ${result?.name ?? '알 수 없음'}`;
-  spinning = false;
-
-  // 깜빡임 애니메이션
-  let blink = false;
-  let blinkCount = 0;
-  const blinkInterval = setInterval(() => {
-    blink = !blink;
-    drawWheel(resultIndex, blink);
-    blinkCount++;
-    if (blinkCount >= 6) {
-      clearInterval(blinkInterval);
-      drawWheel(); // 다시 원상복구
-    }
-  }, 500);
-}, 5000);
+    setTimeout(() => {
+      const finalAngle = (360 - (rotation % 360)) % 360;
+      let acc = 0;
+      let resultIndex = -1;
+      for (let i = 0; i < options.length; i++) {
+        const slice = (options[i].probability / total) * 360;
+        if (finalAngle >= acc && finalAngle < acc + slice) {
+          resultIndex = i;
+          break;
+        }
+        acc += slice;
+      }
+      resultDiv.textContent = `결과: ${options[resultIndex].name}`;
+      let blink = false, count = 0;
+      const interval = setInterval(() => {
+        blink = !blink;
+        drawWheel(resultIndex, blink);
+        if (++count >= 6) {
+          clearInterval(interval);
+          drawWheel();
+        }
+      }, 500);
+      spinning = false;
+    }, 5000);
   }
 
   function createSettingsForm() {
+    const settingsDiv = document.getElementById('settings');
     settingsDiv.innerHTML = '';
-    options.forEach((option, index) => {
+    options.forEach((opt, i) => {
       const row = document.createElement('div');
       row.className = 'option-setting';
 
-      const nameInput = document.createElement('input');
-      nameInput.type = 'text';
-      nameInput.value = option.name;
-      nameInput.oninput = e => {
-        option.name = e.target.value;
-        drawWheel();
+      const name = document.createElement('input');
+      name.type = 'text';
+      name.value = opt.name;
+      name.oninput = e => { opt.name = e.target.value; drawWheel(); };
+
+      const prob = document.createElement('input');
+      prob.type = 'number';
+      prob.value = opt.probability;
+      prob.oninput = e => { opt.probability = parseInt(e.target.value) || 0; drawWheel(); };
+
+      const color = document.createElement('input');
+      color.type = 'color';
+      color.value = opt.color;
+      color.oninput = e => { opt.color = e.target.value; drawWheel(); };
+
+      const del = document.createElement('button');
+      del.textContent = '삭제';
+      del.onclick = () => {
+        options.splice(i, 1);
+        createSettingsForm(); drawWheel();
       };
 
-      const probInput = document.createElement('input');
-      probInput.type = 'number';
-      probInput.value = option.probability;
-      probInput.min = 0;
-      probInput.max = 999;
-      probInput.oninput = e => {
-        option.probability = parseInt(e.target.value) || 0;
-        drawWheel();
-      };
-
-      const colorInput = document.createElement('input');
-      colorInput.type = 'color';
-      colorInput.value = option.color;
-      colorInput.oninput = e => {
-        option.color = e.target.value;
-        drawWheel();
-      };
-
-      const delBtn = document.createElement('button');
-      delBtn.textContent = '삭제';
-      delBtn.onclick = () => {
-        options.splice(index, 1);
-        createSettingsForm();
-        drawWheel();
-      };
-
-      row.append(nameInput, probInput, colorInput, delBtn);
+      row.append(name, prob, color, del);
       settingsDiv.appendChild(row);
     });
   }
 
-  addOptionBtn.onclick = () => {
-    options.push({ name: `${options.length + 1}`, probability: 999, color: '#cccccc' });
+  document.getElementById('spinButton').onclick = spinWheel;
+  document.getElementById('openSettings').onclick = () => {
+    document.getElementById('settingsModal').style.display = 'flex';
     createSettingsForm();
-    drawWheel();
+  };
+  document.getElementById('addOption').onclick = () => {
+    options.push({ name: `${options.length + 1}`, probability: 999, color: '#cccccc' });
+    createSettingsForm(); drawWheel();
+  };
+  document.getElementById('saveSettings').onclick = () => {
+    localStorage.setItem('rouletteOptions', JSON.stringify(options));
+    alert('저장됨!');
+  };
+  document.getElementById('loadSettings').onclick = () => {
+    const saved = localStorage.getItem('rouletteOptions');
+    if (!saved) return alert('없어요');
+    try {
+      options = JSON.parse(saved);
+      createSettingsForm(); drawWheel();
+    } catch {
+      alert('불러오기 실패');
+    }
+  };
+  document.getElementById('resetToDefault').onclick = () => {
+    options = Array.from({ length: 30 }, (_, i) => ({
+      name: `${i + 1}`, probability: 999, color: `hsl(${(i * 12) % 360}, 80%, 60%)`
+    }));
+    createSettingsForm(); drawWheel();
+  };
+  document.getElementById('darkModeToggle').onchange = e => {
+    document.body.classList.toggle('dark', e.target.checked);
   };
 
-  // 초기화 시 회전각을 0으로 설정하여 첫 시작에서 화살표가 12시 방향을 가리키게 함
-  rotation = 0; // 초기 상태에서 회전 각도를 0으로 설정
-
-  drawWheel();
-  createSettingsForm();
-  spinButton.onclick = spinWheel;
-
-  // 저장 버튼 클릭 시 LocalStorage에 저장
-document.getElementById('saveSettings').onclick = () => {
-  localStorage.setItem('rouletteOptions', JSON.stringify(options));
-  alert('항목 설정이 저장되었습니다!');
-};
-
-document.getElementById('resetToDefault').onclick = () => {
-  options = Array.from({ length: 30 }, (_, i) => ({
-    name: `${i + 1}`,
-    probability: 999,
-    color: `hsl(${(i * 12) % 360}, 80%, 60%)`
-  }));
-  drawWheel();
-  createSettingsForm();
-  alert('기본 설정으로 초기화되었습니다!');
-};
-
-// 불러오기 버튼 클릭 시 저장된 설정 복원
-document.getElementById('loadSettings').onclick = () => {
-  const saved = localStorage.getItem('rouletteOptions');
-  if (!saved) {
-    alert('저장된 설정이 없습니다.');
-    return;
-  }
-
-  try {
-    const parsed = JSON.parse(saved);
-    if (Array.isArray(parsed)) {
-      options = parsed;
-      createSettingsForm();
-      drawWheel();
-      alert('설정이 불러와졌습니다!');
-    } else {
-      throw new Error();
-    }
-  } catch (e) {
-    alert('저장된 데이터를 불러오는 데 실패했습니다.');
-  }
-};
-const slotsDiv = document.getElementById('slots');
-
-function createSlotControls() {
-  slotsDiv.innerHTML = '';
-  for (let i = 1; i <= 6; i++) {
-    const row = document.createElement('div');
-    row.style.marginBottom = '10px';
-
-    const label = document.createElement('span');
-    label.textContent = `슬롯 ${i}번`;
-
-    const saveBtn = document.createElement('button');
-    saveBtn.textContent = '저장';
-    saveBtn.onclick = () => {
-      localStorage.setItem(`rouletteSlot${i}`, JSON.stringify(options));
-      alert(`슬롯 ${i}에 저장되었습니다!`);
-    };
-
-    const loadBtn = document.createElement('button');
-    loadBtn.textContent = '불러오기';
-    loadBtn.onclick = () => {
-      const data = localStorage.getItem(`rouletteSlot${i}`);
-      if (data) {
-        try {
-          const parsed = JSON.parse(data);
-          if (Array.isArray(parsed)) {
-            options = parsed;
-            createSettingsForm();
-            drawWheel();
-            alert(`슬롯 ${i} 설정을 불러왔습니다!`);
-          } else {
-            throw new Error();
+  function createSlotControls() {
+    const slotsDiv = document.getElementById('slots');
+    slotsDiv.innerHTML = '';
+    for (let i = 1; i <= 6; i++) {
+      const row = document.createElement('div');
+      row.innerHTML = `슬롯 ${i}번`;
+      ['저장', '불러오기', '초기화'].forEach(action => {
+        const btn = document.createElement('button');
+        btn.textContent = action;
+        btn.onclick = () => {
+          const key = `slot${i}`;
+          if (action === '저장') {
+            localStorage.setItem(key, JSON.stringify(options));
+            alert(`${key} 저장됨`);
+          } else if (action === '불러오기') {
+            const data = localStorage.getItem(key);
+            if (data) {
+              options = JSON.parse(data);
+              drawWheel(); createSettingsForm();
+              alert(`${key} 불러옴`);
+            } else {
+              alert('없음');
+            }
+          } else if (action === '초기화') {
+            options = Array.from({ length: 30 }, (_, i) => ({
+              name: `${i + 1}`, probability: 999, color: `hsl(${(i * 12) % 360}, 80%, 60%)`
+            }));
+            localStorage.setItem(key, JSON.stringify(options));
+            drawWheel(); createSettingsForm();
+            alert(`${key} 초기화`);
           }
-        } catch {
-          alert('불러오기 실패: 형식 오류');
-        }
-      } else {
-        alert('해당 슬롯에 저장된 설정이 없습니다.');
-      }
-    };
-
-    const clearBtn = document.createElement('button');
-    clearBtn.textContent = '초기화';
-    clearBtn.onclick = () => {
-      const defaultOptions = Array.from({ length: 30 }, (_, i) => ({
-        name: `${i + 1}`,
-        probability: 999,
-        color: `hsl(${(i * 12) % 360}, 80%, 60%)`
-      }));
-      localStorage.setItem(`rouletteSlot${i}`, JSON.stringify(defaultOptions));
-
-      // 👉 실제 화면도 이 초기값으로 업데이트
-      options = defaultOptions;
-      createSettingsForm();
-      drawWheel();
-
-      alert(`슬롯 ${i}가 초기 설정으로 초기화되었습니다.`);
-    };
-    row.append(label, saveBtn, loadBtn, clearBtn);
-    slotsDiv.appendChild(row);
+        };
+        row.appendChild(btn);
+      });
+      slotsDiv.appendChild(row);
+    }
   }
-}
 
-createSlotControls(); // 최초 실행 시 생성
-
+  createSlotControls();
+  drawWheel();
 </script>
 </body>
 </html>
