@@ -81,6 +81,48 @@
     .option-setting button {
       padding: 5px 10px;
     }
+    #control-panel button {
+      margin: 5px 5px 5px 0;
+    }
+    
+    #slots div {
+      display: flex;
+      gap: 5px;
+      align-items: center;
+    }
+    
+    #slotControls h3 {
+      margin-top: 30px;
+      font-size: 18px;
+      font-weight: bold;
+      border-top: 1px solid #ccc;
+      padding-top: 10px;
+    }
+    
+    #slotControls button {
+      padding: 4px 8px;
+      font-size: 12px;
+    }
+    
+    .option-setting input[type="text"] {
+      flex: 1;
+    }
+    .option-setting input[type="number"] {
+      width: 60px;
+    }
+    .option-setting input[type="color"] {
+      width: 40px;
+      padding: 0;
+      border: none;
+      background: none;
+    }
+    .option-setting button {
+      width: 50px;
+    }
+    #globalControls {
+      margin-top: 10px;
+      margin-bottom: 20px;
+    }
   </style>
 </head>
 <body>
@@ -95,10 +137,12 @@
     <button id="spinButton">돌리기</button>
     <div id="result"></div>
     <div id="settings"></div>
-    <button id="addOption">항목 추가</button>
-    <button id="saveSettings">현재 룰렛 저장</button>
-    <button id="loadSettings">최근 저장 불러오기</button>
-    <button id="resetToDefault">룰렛 초기화</button>
+    <div id="globalControls">
+      <button id="addOption">항목 추가</button>
+      <button id="saveSettings">전체 저장</button>
+      <button id="loadSettings">전체 불러오기</button>
+      <button id="resetToDefault">룰렛 초기화</button>
+    </div>
 
       <div id="slotControls">
         <h3>슬롯 저장/불러오기</h3>
