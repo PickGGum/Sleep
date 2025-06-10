@@ -14,6 +14,12 @@ let options = Array.from({ length: 30 }, (_, i) => ({
 const resultDiv = document.getElementById('result');
 const wheelEl = document.getElementById('wheel');
 
+const colorPreview = document.createElement('div');
+colorPreview.style.width = '20px';
+colorPreview.style.height = '20px';
+colorPreview.style.border = '1px solid #888';
+colorPreview.style.backgroundColor = opt.color;
+
 function drawWheel(highlightIndex = -1, blink = false) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const total = options.reduce((sum, o) => sum + o.probability, 0);
@@ -133,7 +139,12 @@ function createSettingsForm() {
       if (colorCode === opt.color) o.selected = true;
       color.appendChild(o);
     });
-    color.onchange = e => { opt.color = e.target.value; drawWheel(); };
+    
+    color.onchange = e => {
+      opt.color = e.target.value;
+      colorPreview.style.backgroundColor = opt.color;
+      drawWheel();
+    };
 
     const del = document.createElement('button');
     del.textContent = '삭제';
