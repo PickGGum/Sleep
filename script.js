@@ -148,7 +148,7 @@ const canvas = document.getElementById('wheelCanvas');
     createSettingsForm();
   };
   document.getElementById('addOption').onclick = () => {
-    options.push({ name: `${options.length + 1}`, probability: 999, color: '#cccccc' });
+    options.push({ name: `${options.length + 1}`, probability: 999, color: getNextColor() });
     createSettingsForm(); drawWheel();
   };
   document.getElementById('saveSettings').onclick = () => {
