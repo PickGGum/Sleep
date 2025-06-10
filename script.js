@@ -11,6 +11,17 @@ const canvas = document.getElementById('wheelCanvas');
 
   const resultDiv = document.getElementById('result');
   const wheelEl = document.getElementById('wheel');
+  const up = document.createElement('button'); up.textContent='↑';
+  up.onclick = () => {
+    if (i>0) [options[i-1],options[i]] = [options[i],options[i-1]];
+    createSettingsForm(); drawWheel();
+  };
+  const down = document.createElement('button'); down.textContent='↓';
+  down.onclick = () => {
+    if (i<options.length-1) [options[i+1],options[i]] = [options[i],options[i+1]];
+    createSettingsForm(); drawWheel();
+  };
+  row.append(up, down);
 
   function drawWheel(highlightIndex = -1, blink = false) {
     ctx.clearRect(0, 0, canvas.width, canvas.height);
