@@ -135,22 +135,27 @@ function createSettingsForm() {
     prob.value = opt.probability;
     prob.oninput = e => { opt.probability = parseInt(e.target.value) || 0; drawWheel(); };
 
-   const color = document.createElement('select');
+    const color = document.createElement('select');
     palette.forEach(colorCode => {
       const o = document.createElement('option');
       o.value = colorCode;
       o.style.backgroundColor = colorCode;
       if (colorCode === opt.color) o.selected = true;
       color.appendChild(o);
-      });
-  
+    });
+
+    const colorPreview = document.createElement('div');
+    colorPreview.style.width = '20px';
+    colorPreview.style.height = '20px';
+    colorPreview.style.border = '1px solid #888';
+    colorPreview.style.marginLeft = '8px';
+    colorPreview.style.backgroundColor = opt.color;
+
     color.onchange = e => {
       opt.color = e.target.value;
       colorPreview.style.backgroundColor = opt.color;
       drawWheel();
     };
-
-  row.append(dragHandle, name, prob, color, colorPreview, del);
 
     const del = document.createElement('button');
     del.textContent = '삭제';
@@ -159,7 +164,7 @@ function createSettingsForm() {
       createSettingsForm(); drawWheel();
     };
 
-    row.append(dragHandle, name, prob, color, del);
+    row.append(dragHandle, name, prob, color, colorPreview, del);
     settingsDiv.appendChild(row);
   });
 
@@ -173,6 +178,7 @@ function createSettingsForm() {
     }
   });
 }
+
 
 function getNextColor() {
   if (options.length === 0) return palette[0];
