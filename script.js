@@ -14,11 +14,24 @@ let options = Array.from({ length: 30 }, (_, i) => ({
 const resultDiv = document.getElementById('result');
 const wheelEl = document.getElementById('wheel');
 
+// 🟢 컬러 select 생성
+const color = document.createElement('select');
+palette.forEach(colorCode => {
+  const o = document.createElement('option');
+  o.value = colorCode;
+  o.style.backgroundColor = colorCode;
+  if (colorCode === opt.color) o.selected = true;
+  color.appendChild(o);
+});
+
+// 🟢 컬러 미리보기 박스 (항목마다 생성해야 함)
 const colorPreview = document.createElement('div');
-colorPreview.style.width = '20px';
-colorPreview.style.height = '20px';
-colorPreview.style.border = '1px solid #888';
+colorPreview.style.width = '24px';
+colorPreview.style.height = '24px';
+colorPreview.style.border = '2px solid #888';
+colorPreview.style.borderRadius = '4px';
 colorPreview.style.backgroundColor = opt.color;
+colorPreview.style.marginLeft = '6px';
 
 function drawWheel(highlightIndex = -1, blink = false) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -140,12 +153,13 @@ function createSettingsForm() {
       color.appendChild(o);
     });
     
+    // 🟢 select 변경 시 preview 동기화
     color.onchange = e => {
       opt.color = e.target.value;
       colorPreview.style.backgroundColor = opt.color;
       drawWheel();
     };
-    row.append(colorPreview)
+    row.append(dragHandle, name, prob, color, colorPreview, del);
 
     const del = document.createElement('button');
     del.textContent = '삭제';
