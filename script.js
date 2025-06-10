@@ -145,6 +145,7 @@ function createSettingsForm() {
       colorPreview.style.backgroundColor = opt.color;
       drawWheel();
     };
+    row.append(colorPreview)
 
     const del = document.createElement('button');
     del.textContent = '삭제';
