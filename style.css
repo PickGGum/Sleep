@@ -7,10 +7,10 @@
 }
 
   body.dark {
-  --bg-color: #202020;
-  --text-color: #eee;
-  --btn-bg: #45a049;
-  --btn-hover: #226b26;
+    --bg-color: #202020;
+    --text-color: #eee;
+    --btn-bg: #45a049;
+    --btn-hover: #226b26;
 }
 
 body {
