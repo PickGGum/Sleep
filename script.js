@@ -11,27 +11,18 @@ let options = Array.from({ length: 30 }, (_, i) => ({
   color: palette[i]
 }));
 
-const resultDiv = document.getElementById('result');
-const wheelEl = document.getElementById('wheel');
+options.forEach((opt, i) => {
+  const row = document.createElement('div');
+  row.className = 'option-setting';
+  row.setAttribute('data-index', i);
 
-// 🟢 컬러 select 생성
-const color = document.createElement('select');
-palette.forEach(colorCode => {
-  const o = document.createElement('option');
-  o.value = colorCode;
-  o.style.backgroundColor = colorCode;
-  if (colorCode === opt.color) o.selected = true;
-  color.appendChild(o);
-});
-
-// 🟢 컬러 미리보기 박스 (항목마다 생성해야 함)
-const colorPreview = document.createElement('div');
-colorPreview.style.width = '24px';
-colorPreview.style.height = '24px';
-colorPreview.style.border = '2px solid #888';
-colorPreview.style.borderRadius = '4px';
-colorPreview.style.backgroundColor = opt.color;
-colorPreview.style.marginLeft = '6px';
+  const colorPreview = document.createElement('div');
+  colorPreview.style.width = '24px';
+  colorPreview.style.height = '24px';
+  colorPreview.style.border = '1px solid #888';
+  colorPreview.style.borderRadius = '4px';
+  colorPreview.style.marginLeft = '6px';
+  colorPreview.style.backgroundColor = opt.color;
 
 function drawWheel(highlightIndex = -1, blink = false) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -144,22 +135,22 @@ function createSettingsForm() {
     prob.value = opt.probability;
     prob.oninput = e => { opt.probability = parseInt(e.target.value) || 0; drawWheel(); };
 
-    const color = document.createElement('select');
+   const color = document.createElement('select');
     palette.forEach(colorCode => {
       const o = document.createElement('option');
       o.value = colorCode;
       o.style.backgroundColor = colorCode;
       if (colorCode === opt.color) o.selected = true;
       color.appendChild(o);
-    });
-    
-    // 🟢 select 변경 시 preview 동기화
+      });
+  
     color.onchange = e => {
       opt.color = e.target.value;
       colorPreview.style.backgroundColor = opt.color;
       drawWheel();
     };
-    row.append(dragHandle, name, prob, color, colorPreview, del);
+
+  row.append(dragHandle, name, prob, color, colorPreview, del);
 
     const del = document.createElement('button');
     del.textContent = '삭제';
