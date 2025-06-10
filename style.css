@@ -6,11 +6,11 @@
   --modal-bg: rgba(0, 0, 0, 0.5);
 }
 
-  body.dark {
-    --bg-color: #202020;
-    --text-color: #eee;
-    --btn-bg: #45a049;
-    --btn-hover: #226b26;
+body.dark {
+  --bg-color: #202020;
+  --text-color: #eee;
+  --btn-bg: #45a049;
+  --btn-hover: #226b26;
 }
 
 body {
