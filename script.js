@@ -101,6 +101,13 @@ const canvas = document.getElementById('wheelCanvas');
     }, 5000);
   }
 
+  function getNextColor() {
+    if (options.length === 0) return '#cccccc';
+    const last = options[options.length-1].color;
+    const hue = parseInt(last.match(/hsl\((\d+),/)[1]);
+    return `hsl(${(hue+30)%360},80%,60%)`;
+  }
+
   function createSettingsForm() {
     const settingsDiv = document.getElementById('settings');
     settingsDiv.innerHTML = '';
