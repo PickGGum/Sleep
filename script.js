@@ -109,6 +109,11 @@ function createSettingsForm() {
   options.forEach((opt, i) => {
     const row = document.createElement('div');
     row.className = 'option-setting';
+    row.setAttribute('data-index', i);
+
+    const dragHandle = document.createElement('span');
+    dragHandle.className = 'drag-handle';
+    dragHandle.textContent = '≡';
 
     const name = document.createElement('input');
     name.type = 'text';
@@ -124,7 +129,6 @@ function createSettingsForm() {
     palette.forEach(colorCode => {
       const o = document.createElement('option');
       o.value = colorCode;
-      o.textContent = '';
       o.style.backgroundColor = colorCode;
       if (colorCode === opt.color) o.selected = true;
       color.appendChild(o);
@@ -138,26 +142,18 @@ function createSettingsForm() {
       createSettingsForm(); drawWheel();
     };
 
-    const up = document.createElement('button');
-    up.textContent = '↑';
-    up.onclick = () => {
-      if (i > 0) {
-        [options[i - 1], options[i]] = [options[i], options[i - 1]];
-        createSettingsForm(); drawWheel();
-      }
-    };
-
-    const down = document.createElement('button');
-    down.textContent = '↓';
-    down.onclick = () => {
-      if (i < options.length - 1) {
-        [options[i], options[i + 1]] = [options[i + 1], options[i]];
-        createSettingsForm(); drawWheel();
-      }
-    };
-
-    row.append(name, prob, color, del, up, down);
+    row.append(dragHandle, name, prob, color, del);
     settingsDiv.appendChild(row);
+  });
+
+  Sortable.create(settingsDiv, {
+    animation: 150,
+    handle: '.drag-handle',
+    onEnd: function (evt) {
+      const [movedItem] = options.splice(evt.oldIndex, 1);
+      options.splice(evt.newIndex, 0, movedItem);
+      createSettingsForm(); drawWheel();
+    }
   });
 }
 
