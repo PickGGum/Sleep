@@ -124,7 +124,7 @@ function createSettingsForm() {
     palette.forEach(colorCode => {
       const o = document.createElement('option');
       o.value = colorCode;
-      o.textContent = colorCode;
+      o.textContent = '';
       o.style.backgroundColor = colorCode;
       if (colorCode === opt.color) o.selected = true;
       color.appendChild(o);
