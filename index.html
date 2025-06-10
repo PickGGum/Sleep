@@ -1,11 +1,40 @@
 <!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="UTF-8">
-    <title>Redirecting...</title>
-    <meta http-equiv="refresh" content="0; url=Sleep.html">
-  </head>
-  <body>
-    <p>Redirecting to <a href="Sleep.html">Sleep.html</a></p>
-  </body>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <title>룰렛 완전체</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+  <div id="wheel-section">
+    <div id="arrow"></div>
+    <div id="wheel"><canvas id="wheelCanvas" width="600" height="600"></canvas></div>
+  </div>
+  <div id="control-panel">
+    <button id="spinButton">돌리기</button>
+    <button id="openSettings">항목 보기</button>
+    <button id="saveSettings">현재 룰렛 저장</button>
+    <button id="loadSettings">최근 저장 불러오기</button>
+    <button id="resetToDefault">룰렛 초기화</button>
+    <label id="darkToggle"><input type="checkbox" id="darkModeToggle"> 다크모드</label>
+    <div id="result"></div>
+    <h3>슬롯 저장/불러오기</h3>
+    <div id="slots"></div>
+  </div>
+</div>
+
+<!-- 모달 -->
+<div class="modal" id="settingsModal">
+  <div class="modal-content">
+    <h2>항목 설정</h2>
+    <div id="settings"></div>
+    <button onclick="document.getElementById('settingsModal').style.display='none'">닫기</button>
+    <button id="addOption">항목 추가</button>
+  </div>
+</div>
+
+<script src="script.js"></script>
+</body>
 </html>
