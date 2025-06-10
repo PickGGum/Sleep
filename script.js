@@ -16,20 +16,28 @@ options.forEach((opt, i) => {
   row.className = 'option-setting';
   row.setAttribute('data-index', i);
 
-  const colorPreview = document.createElement('div');
-  colorPreview.style.width = '24px';
-  colorPreview.style.height = '24px';
-  colorPreview.style.border = '1px solid #888';
-  colorPreview.style.borderRadius = '4px';
-  colorPreview.style.marginLeft = '6px';
-  colorPreview.style.backgroundColor = opt.color;
-
 function drawWheel(highlightIndex = -1, blink = false) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
   const total = options.reduce((sum, o) => sum + o.probability, 0);
   let startAngle = -Math.PI / 2;
 
   options.forEach((opt, i) => {
+    const colorPreview = document.createElement('div');
+    colorPreview.style.width = '24px';
+    colorPreview.style.height = '24px';
+    colorPreview.style.border = '2px solid #444';
+    colorPreview.style.marginLeft = '6px';
+    colorPreview.style.borderRadius = '4px';
+    colorPreview.style.backgroundColor = opt.color;
+    
+    color.onchange = e => {
+      opt.color = e.target.value;
+      colorPreview.style.backgroundColor = opt.color;
+      drawWheel();
+    };
+    
+    row.append(dragHandle, name, prob, color, colorPreview, del);
+
     const sliceAngle = (opt.probability / total) * 2 * Math.PI;
     ctx.beginPath();
     ctx.moveTo(300, 300);
