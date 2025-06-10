@@ -181,13 +181,13 @@ const canvas = document.getElementById('wheelCanvas');
           const key = `slot${i}`;
           if (action === '저장') {
             localStorage.setItem(key, JSON.stringify(options));
-            alert(`${key} 저장됨`);
+            alert(`${key}을(를) 저장했습니다.`);
           } else if (action === '불러오기') {
             const data = localStorage.getItem(key);
             if (data) {
               options = JSON.parse(data);
               drawWheel(); createSettingsForm();
-              alert(`${key} 불러옴`);
+              alert(`${key}을(를) 불러왔습니다.`);
             } else {
               alert('없음');
             }
@@ -197,7 +197,7 @@ const canvas = document.getElementById('wheelCanvas');
             }));
             localStorage.setItem(key, JSON.stringify(options));
             drawWheel(); createSettingsForm();
-            alert(`${key} 초기화`);
+            alert(`${key}을(를) 기본 설정으로 되돌렸습니다.`);
           }
         };
         row.appendChild(btn);
