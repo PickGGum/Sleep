@@ -2,9 +2,10 @@
 <html lang="ko">
 <head>
   <meta charset="UTF-8" />
-  <title>Sleep</title>
+  <title>룰렛 앱</title>
   <link rel="stylesheet" href="style.css">
   <link href="https://fonts.googleapis.com/css2?family=Nanum+Gothic&display=swap" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js"></script>
 </head>
 <body>
 <div class="container">
@@ -25,11 +26,10 @@
   </div>
 </div>
 
-<!-- 모달 -->
 <div class="modal" id="settingsModal">
   <div class="modal-content">
     <h2>항목 설정</h2>
-    <div id="settings"></div>
+    <div id="settings" class="settings-list"></div>
     <button onclick="document.getElementById('settingsModal').style.display='none'">닫기</button>
     <button id="addOption">항목 추가</button>
   </div>
