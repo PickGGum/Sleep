@@ -38,7 +38,7 @@ function drawWheel(highlightIndex = -1, blink = false) {
     ctx.translate(300, 300);
     ctx.rotate(startAngle + sliceAngle / 2);
     ctx.fillStyle = "#fff";
-    ctx.font = '16px Arial';
+    ctx.font = '16px Nanum Gothic';
     ctx.textAlign = 'right';
     ctx.fillText(opt.name, 280, 10);
     ctx.restore();
