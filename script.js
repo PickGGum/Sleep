@@ -103,6 +103,17 @@ function spinWheel() {
   }, 5000);
 }
 
+function resetToDefault() {
+  options = Array.from({ length: 30 }, (_, i) => ({
+    name: `${i + 1}`,
+    probability: 999,
+    color: palette[i % palette.length]
+  }));
+  createSettingsForm();
+  drawWheel();
+}
+
+
 function createSettingsForm() {
   const settingsDiv = document.getElementById('settings');
   settingsDiv.innerHTML = '';
