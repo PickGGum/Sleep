@@ -254,9 +254,19 @@ window.addEventListener('keydown', e => {
 function createSlotControls() {
   const slotsDiv = document.getElementById('slots');
   slotsDiv.innerHTML = '';
+
   for (let i = 1; i <= 6; i++) {
     const row = document.createElement('div');
-    row.innerHTML = `슬롯 ${i}번`;
+    row.style.display = 'flex';
+    row.style.alignItems = 'center';
+    row.style.gap = '10px';
+    row.style.marginBottom = '8px';
+
+    const label = document.createElement('span');
+    label.textContent = `슬롯 ${i}번`;
+
+    row.appendChild(label); // ✅ 텍스트는 별도 span으로
+
     ['저장', '불러오기', '초기화'].forEach(action => {
       const btn = document.createElement('button');
       btn.textContent = action;
@@ -285,6 +295,7 @@ function createSlotControls() {
       };
       row.appendChild(btn);
     });
+
     slotsDiv.appendChild(row);
   }
 }
