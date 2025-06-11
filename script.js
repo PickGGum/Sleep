@@ -11,10 +11,8 @@ let options = Array.from({ length: 30 }, (_, i) => ({
   color: palette[i]
 }));
 
-options.forEach((opt, i) => {
-  const row = document.createElement('div');
-  row.className = 'option-setting';
-  row.setAttribute('data-index', i);
+const resultDiv = document.getElementById('result');
+const wheelEl = document.getElementById('wheel');
 
 function drawWheel(highlightIndex = -1, blink = false) {
   ctx.clearRect(0, 0, canvas.width, canvas.height);
@@ -22,22 +20,6 @@ function drawWheel(highlightIndex = -1, blink = false) {
   let startAngle = -Math.PI / 2;
 
   options.forEach((opt, i) => {
-    const colorPreview = document.createElement('div');
-    colorPreview.style.width = '24px';
-    colorPreview.style.height = '24px';
-    colorPreview.style.border = '2px solid #444';
-    colorPreview.style.marginLeft = '6px';
-    colorPreview.style.borderRadius = '4px';
-    colorPreview.style.backgroundColor = opt.color;
-    
-    color.onchange = e => {
-      opt.color = e.target.value;
-      colorPreview.style.backgroundColor = opt.color;
-      drawWheel();
-    };
-    
-    row.append(dragHandle, name, prob, color, colorPreview, del);
-
     const sliceAngle = (opt.probability / total) * 2 * Math.PI;
     ctx.beginPath();
     ctx.moveTo(300, 300);
@@ -136,12 +118,29 @@ function createSettingsForm() {
     const name = document.createElement('input');
     name.type = 'text';
     name.value = opt.name;
-    name.oninput = e => { opt.name = e.target.value; drawWheel(); };
+    name.oninput = e => {
+      opt.name = e.target.value.trim();
+      if (!opt.name) e.target.style.border = '2px solid red';
+      else e.target.style.border = '';
+      drawWheel();
+    };
 
     const prob = document.createElement('input');
     prob.type = 'number';
     prob.value = opt.probability;
-    prob.oninput = e => { opt.probability = parseInt(e.target.value) || 0; drawWheel(); };
+    prob.min = 1;
+    prob.max = 999;
+    prob.oninput = e => {
+      let val = parseInt(e.target.value);
+      if (isNaN(val) || val < 1) {
+        e.target.style.border = '2px solid red';
+        opt.probability = 1;
+      } else {
+        e.target.style.border = '';
+        opt.probability = val;
+      }
+      drawWheel();
+    };
 
     const color = document.createElement('select');
     palette.forEach(colorCode => {
@@ -153,10 +152,11 @@ function createSettingsForm() {
     });
 
     const colorPreview = document.createElement('div');
-    colorPreview.style.width = '20px';
-    colorPreview.style.height = '20px';
+    colorPreview.style.width = '24px';
+    colorPreview.style.height = '24px';
     colorPreview.style.border = '1px solid #888';
-    colorPreview.style.marginLeft = '8px';
+    colorPreview.style.marginLeft = '6px';
+    colorPreview.style.borderRadius = '4px';
     colorPreview.style.backgroundColor = opt.color;
 
     color.onchange = e => {
@@ -169,7 +169,8 @@ function createSettingsForm() {
     del.textContent = '삭제';
     del.onclick = () => {
       options.splice(i, 1);
-      createSettingsForm(); drawWheel();
+      createSettingsForm();
+      drawWheel();
     };
 
     row.append(dragHandle, name, prob, color, colorPreview, del);
@@ -182,11 +183,11 @@ function createSettingsForm() {
     onEnd: function (evt) {
       const [movedItem] = options.splice(evt.oldIndex, 1);
       options.splice(evt.newIndex, 0, movedItem);
-      createSettingsForm(); drawWheel();
+      createSettingsForm();
+      drawWheel();
     }
   });
 }
-
 
 function getNextColor() {
   if (options.length === 0) return palette[0];
@@ -202,7 +203,8 @@ document.getElementById('openSettings').onclick = () => {
 };
 document.getElementById('addOption').onclick = () => {
   options.push({ name: `${options.length + 1}`, probability: 999, color: getNextColor() });
-  createSettingsForm(); drawWheel();
+  createSettingsForm();
+  drawWheel();
 };
 document.getElementById('saveSettings').onclick = () => {
   localStorage.setItem('rouletteOptions', JSON.stringify(options));
@@ -213,7 +215,8 @@ document.getElementById('loadSettings').onclick = () => {
   if (!saved) return alert('없어요');
   try {
     options = JSON.parse(saved);
-    createSettingsForm(); drawWheel();
+    createSettingsForm();
+    drawWheel();
   } catch {
     alert('불러오기 실패');
   }
@@ -222,7 +225,8 @@ document.getElementById('resetToDefault').onclick = () => {
   options = Array.from({ length: 30 }, (_, i) => ({
     name: `${i + 1}`, probability: 999, color: palette[i % palette.length]
   }));
-  createSettingsForm(); drawWheel();
+  createSettingsForm();
+  drawWheel();
 };
 document.getElementById('darkModeToggle').onchange = e => {
   document.body.classList.toggle('dark', e.target.checked);
