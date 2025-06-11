@@ -170,6 +170,9 @@ function createSettingsForm() {
     del.onclick = () => {
       options.splice(i, 1);
       createSettingsForm();
+      if (!options || options.length === 0) {
+        resetToDefault();
+      }
       drawWheel();
     };
 
