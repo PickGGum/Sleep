@@ -60,18 +60,6 @@ function pickByProbability() {
 function spinWheel() {
   if (spinning) return;
   spinning = true;
-  const rouletteEffect = pickRandom(rouletteEffects);
-  const endEffect = pickRandom(endEffects);
-  if (rouletteEffect === 'fade-wheel') {
-    wheelEl.style.transition = 'opacity 0.5s';
-    setTimeout(() => {
-      wheelEl.style.opacity = '0';
-      setTimeout(() => {
-        wheelEl.style.opacity = '1';
-      }, 500);
-    }, 2000);
-  }
-
   const total = options.reduce((sum, o) => sum + o.probability, 0);
   const target = pickByProbability();
 
@@ -111,9 +99,6 @@ function spinWheel() {
         drawWheel();
       }
     }, 500);
-    if (endEffect === 'fireworks') {
-      fireworksEffect(); 
-    }
     spinning = false;
   }, 5000);
 }
@@ -314,60 +299,5 @@ function createSlotControls() {
     slotsDiv.appendChild(row);
   }
 }
-const rouletteEffects = ['fade-wheel', 'rewind', 'decelerate-accelerate', 'rewind-bounce', null]; // 🎡 룰렛 효과
-const endEffects = ['fireworks', 'sparkle-burst', 'confetti', null]; // 🎉 마무리 효과
-
-
-function pickRandom(arr) {
-  return arr[Math.floor(Math.random() * arr.length)];
-}
-const fwCanvas = document.getElementById('fireworksCanvas');
-const fwCtx = fwCanvas.getContext('2d');
-fwCanvas.style.position = 'fixed'; 
-fwCanvas.style.top = '0';
-fwCanvas.style.left = '0';
-fwCanvas.style.width = '100vw';
-fwCanvas.style.height = '100vh';
-fwCanvas.width = window.innerWidth;
-fwCanvas.height = window.innerHeight;
-fwCanvas.style.zIndex = '9999'; 
-fwCanvas.style.pointerEvents = 'none';
-
-
-function fireworksEffect(duration = 1500) {
-  const particles = [];
-  for (let i = 0; i < 30; i++) {
-    particles.push({
-      x: fwCanvas.width / 2 + (Math.random() - 0.5) * fwCanvas.width,
-      y: fwCanvas.height / 2 + (Math.random() - 0.5) * fwCanvas.height,
-      vx: (Math.random() - 0.5) * 6,
-      vy: (Math.random() - 0.5) * 6,
-      alpha: 1,
-      color: `hsl(${Math.random() * 360}, 80%, 60%)`
-    });
-  }
-const start = performance.now();
-
-function drawFW(now) {
-  const elapsed = now - start;
-  fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
-  particles.forEach(p => {
-    p.x += p.vx;
-    p.y += p.vy;
-    p.alpha -= 0.02;
-    if (p.alpha > 0) {
-      fwCtx.fillStyle = p.color;
-      fwCtx.globalAlpha = p.alpha;
-      fwCtx.beginPath();
-      fwCtx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
-      fwCtx.fill();
-    }
-  });
-  fwCtx.globalAlpha = 1;
-  if (elapsed < duration) requestAnimationFrame(drawFW);
-}
-  requestAnimationFrame(drawFW);
-}
-
 createSlotControls();
 drawWheel();
