@@ -323,45 +323,49 @@ function pickRandom(arr) {
 }
 const fwCanvas = document.getElementById('fireworksCanvas');
 const fwCtx = fwCanvas.getContext('2d');
-fwCanvas.width = canvas.width;
-fwCanvas.height = canvas.height;
-fwCanvas.style.position = 'absolute';
-fwCanvas.style.left = canvas.offsetLeft + 'px';
-fwCanvas.style.top = canvas.offsetTop + 'px';
+fwCanvas.style.position = 'fixed'; 
+fwCanvas.style.top = '0';
+fwCanvas.style.left = '0';
+fwCanvas.style.width = '100vw';
+fwCanvas.style.height = '100vh';
+fwCanvas.width = window.innerWidth;
+fwCanvas.height = window.innerHeight;
+fwCanvas.style.zIndex = '9999'; 
 fwCanvas.style.pointerEvents = 'none';
+
 
 function fireworksEffect(duration = 1500) {
   const particles = [];
-  for (let i = 0; i < 20; i++) {
+  for (let i = 0; i < 30; i++) {
     particles.push({
-      x: canvas.width / 2,
-      y: canvas.height / 2,
-      vx: (Math.random() - 0.5) * 4,
-      vy: (Math.random() - 0.5) * 4,
+      x: fwCanvas.width / 2 + (Math.random() - 0.5) * fwCanvas.width,
+      y: fwCanvas.height / 2 + (Math.random() - 0.5) * fwCanvas.height,
+      vx: (Math.random() - 0.5) * 6,
+      vy: (Math.random() - 0.5) * 6,
       alpha: 1,
       color: `hsl(${Math.random() * 360}, 80%, 60%)`
     });
   }
-  const start = performance.now();
+const start = performance.now();
 
-  function drawFW(now) {
-    const elapsed = now - start;
-    fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
-    particles.forEach(p => {
-      p.x += p.vx;
-      p.y += p.vy;
-      p.alpha -= 0.02;
-      if (p.alpha > 0) {
-        fwCtx.fillStyle = p.color;
-        fwCtx.globalAlpha = p.alpha;
-        fwCtx.beginPath();
-        fwCtx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
-        fwCtx.fill();
-      }
-    });
-    fwCtx.globalAlpha = 1;
-    if (elapsed < duration) requestAnimationFrame(drawFW);
-  }
+function drawFW(now) {
+  const elapsed = now - start;
+  fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+  particles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.alpha -= 0.02;
+    if (p.alpha > 0) {
+      fwCtx.fillStyle = p.color;
+      fwCtx.globalAlpha = p.alpha;
+      fwCtx.beginPath();
+      fwCtx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
+      fwCtx.fill();
+    }
+  });
+  fwCtx.globalAlpha = 1;
+  if (elapsed < duration) requestAnimationFrame(drawFW);
+}
   requestAnimationFrame(drawFW);
 }
 
