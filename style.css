@@ -1,7 +1,7 @@
 :root {
   --bg-color: #f0f2f5;
   --text-color: #000;
-  --btn-bg: #4CAF50;
+  --btn-bg: #000;
   --btn-hover: #45a049;
   --modal-bg: rgba(0, 0, 0, 0.5);
 }
