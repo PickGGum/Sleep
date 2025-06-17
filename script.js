@@ -60,6 +60,18 @@ function pickByProbability() {
 function spinWheel() {
   if (spinning) return;
   spinning = true;
+  const rouletteEffect = pickRandom(rouletteEffects);
+  const endEffect = pickRandom(endEffects);
+  if (rouletteEffect === 'fade-wheel') {
+    wheelEl.style.transition = 'opacity 0.5s';
+    setTimeout(() => {
+      wheelEl.style.opacity = '0';
+      setTimeout(() => {
+        wheelEl.style.opacity = '1';
+      }, 500);
+    }, 2000);
+  }
+
   const total = options.reduce((sum, o) => sum + o.probability, 0);
   const target = pickByProbability();
 
@@ -99,6 +111,9 @@ function spinWheel() {
         drawWheel();
       }
     }, 500);
+    if (endEffect === 'fireworks') {
+      fireworksEffect(); 
+    }
     spinning = false;
   }, 5000);
 }
