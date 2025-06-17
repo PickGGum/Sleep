@@ -2,7 +2,7 @@ const canvas = document.getElementById('wheelCanvas');
 const ctx = canvas.getContext('2d');
 let rotation = 0;
 let spinning = false;
-const dingSound = new Audio('sounds/ding.mp3');
+const dingSound = new Audio('ding.mp3');
 
 
 const palette = Array.from({ length: 30 }, (_, i) => `hsl(${(i * 12) % 360}, 80%, 60%)`).concat(['#000000', '#ffffff']);
