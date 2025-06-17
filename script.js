@@ -314,6 +314,13 @@ function createSlotControls() {
     slotsDiv.appendChild(row);
   }
 }
+const rouletteEffects = ['fade-wheel', 'rewind', 'decelerate-accelerate', 'rewind-bounce', null]; // 🎡 룰렛 효과
+const endEffects = ['fireworks', 'sparkle-burst', 'confetti', null]; // 🎉 마무리 효과
+
+
+function pickRandom(arr) {
+  return arr[Math.floor(Math.random() * arr.length)];
+}
 
 createSlotControls();
 drawWheel();
