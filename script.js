@@ -321,6 +321,49 @@ const endEffects = ['fireworks', 'sparkle-burst', 'confetti', null]; // 🎉 마
 function pickRandom(arr) {
   return arr[Math.floor(Math.random() * arr.length)];
 }
+const fwCanvas = document.getElementById('fireworksCanvas');
+const fwCtx = fwCanvas.getContext('2d');
+fwCanvas.width = canvas.width;
+fwCanvas.height = canvas.height;
+fwCanvas.style.position = 'absolute';
+fwCanvas.style.left = canvas.offsetLeft + 'px';
+fwCanvas.style.top = canvas.offsetTop + 'px';
+fwCanvas.style.pointerEvents = 'none';
+
+function fireworksEffect(duration = 1500) {
+  const particles = [];
+  for (let i = 0; i < 20; i++) {
+    particles.push({
+      x: canvas.width / 2,
+      y: canvas.height / 2,
+      vx: (Math.random() - 0.5) * 4,
+      vy: (Math.random() - 0.5) * 4,
+      alpha: 1,
+      color: `hsl(${Math.random() * 360}, 80%, 60%)`
+    });
+  }
+  const start = performance.now();
+
+  function drawFW(now) {
+    const elapsed = now - start;
+    fwCtx.clearRect(0, 0, fwCanvas.width, fwCanvas.height);
+    particles.forEach(p => {
+      p.x += p.vx;
+      p.y += p.vy;
+      p.alpha -= 0.02;
+      if (p.alpha > 0) {
+        fwCtx.fillStyle = p.color;
+        fwCtx.globalAlpha = p.alpha;
+        fwCtx.beginPath();
+        fwCtx.arc(p.x, p.y, 4, 0, 2 * Math.PI);
+        fwCtx.fill();
+      }
+    });
+    fwCtx.globalAlpha = 1;
+    if (elapsed < duration) requestAnimationFrame(drawFW);
+  }
+  requestAnimationFrame(drawFW);
+}
 
 createSlotControls();
 drawWheel();
