@@ -2,7 +2,33 @@ const canvas = document.getElementById('wheelCanvas');
 const ctx = canvas.getContext('2d');
 let rotation = 0;
 let spinning = false;
-const dingSound = new Audio('ding.mp3');
+
+const spinSounds = [
+  new Audio('sounds/spin1.wav'),
+  new Audio('sounds/spin2.wav'),
+  new Audio('sounds/spin3.wav'),
+  new Audio('sounds/spin4.wav'),
+];
+const dingSounds = [
+  new Audio('sounds/ding1.wav'),
+  new Audio('sounds/ding2.wav'),
+  new Audio('sounds/ding3.wav'),
+  new Audio('sounds/ding3.mp3')
+];
+
+spinSounds.forEach(s => s.loop = true); // 모두 반복 설정
+
+let currentSpinSound = null;
+
+function getRandomSpinSound() {
+  const index = Math.floor(Math.random() * spinSounds.length);
+  return spinSounds[index];
+}
+
+function getRandomDingSound() {
+  const index = Math.floor(Math.random() * dingSounds.length);
+  return dingSounds[index];
+}
 
 
 const palette = Array.from({ length: 30 }, (_, i) => `hsl(${(i * 12) % 360}, 80%, 60%)`).concat(['#000000', '#ffffff']);
@@ -62,6 +88,11 @@ function pickByProbability() {
 function spinWheel() {
   if (spinning) return;
   spinning = true;
+  
+  currentSpinSound = getRandomSpinSound();
+  currentSpinSound.currentTime = 0;
+  currentSpinSound.play();
+  
   const total = options.reduce((sum, o) => sum + o.probability, 0);
   const target = pickByProbability();
 
@@ -101,7 +132,10 @@ function spinWheel() {
         drawWheel();
       }
     }, 500);
+    currentSpinSound.pause();
+    currentSpinSound.currentTime = 0;
     spinning = false;
+    const dingSound = getRandomDingSound();
     dingSound.currentTime = 0;
     dingSound.play();
   }, 5000);
