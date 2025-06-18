@@ -4,16 +4,16 @@ let rotation = 0;
 let spinning = false;
 
 const spinSounds = [
-  new Audio('sounds/spin1.wav'),
-  new Audio('sounds/spin2.wav'),
-  new Audio('sounds/spin3.wav'),
-  new Audio('sounds/spin4.wav'),
+  Object.assign(new Audio('sounds/spin1.wav'), { volume: 0.7 }),
+  Object.assign(new Audio('sounds/spin2.wav'), { volume: 0.7 }),
+  Object.assign(new Audio('sounds/spin3.wav'), { volume: 0.7 }),
+  Object.assign(new Audio('sounds/spin4.wav'), { volume: 0.7 })
 ];
 const dingSounds = [
-  new Audio('sounds/ding1.wav'),
-  new Audio('sounds/ding2.wav'),
-  new Audio('sounds/ding3.wav'),
-  new Audio('sounds/ding3.mp3')
+  Object.assign(new Audio('sounds/ding1.wav'), { volume: 0.7 }),
+  Object.assign(new Audio('sounds/ding2.wav'), { volume: 0.7 }),
+  Object.assign(new Audio('sounds/ding3.wav'), { volume: 0.7 }),
+  Object.assign(new Audio('sounds/ding4.mp3'), { volume: 0.7 })
 ];
 
 spinSounds.forEach(s => s.loop = true); // 모두 반복 설정
