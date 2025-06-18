@@ -11,7 +11,7 @@ const spinSounds = [
 ];
 const dingSounds = [
   Object.assign(new Audio('sounds/ding1.wav'), { volume: 0.5 }),
-  Object.assign(new Audio('sounds/ding2.wav'), { volume: 0.7 }),
+  Object.assign(new Audio('sounds/ding2.wav'), { volume: 0.8 }),
   Object.assign(new Audio('sounds/ding3.wav'), { volume: 0.7 }),
   Object.assign(new Audio('sounds/ding4.mp3'), { volume: 0.7 })
 ];
