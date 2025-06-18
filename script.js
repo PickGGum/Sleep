@@ -5,9 +5,9 @@ let spinning = false;
 
 const spinSounds = [
   Object.assign(new Audio('sounds/spin1.wav'), { volume: 0.7 }),
-  Object.assign(new Audio('sounds/spin2.wav'), { volume: 0.7 }),
+  Object.assign(new Audio('sounds/spin2.wav'), { volume: 0.6 }),
   Object.assign(new Audio('sounds/spin3.wav'), { volume: 0.7 }),
-  Object.assign(new Audio('sounds/spin4.wav'), { volume: 0.7 })
+  Object.assign(new Audio('sounds/spin4.wav'), { volume: 0.5 })
 ];
 const dingSounds = [
   Object.assign(new Audio('sounds/ding1.wav'), { volume: 0.7 }),
